@@ -1,0 +1,90 @@
+# =============== #
+# Unity generated #
+# =============== #
+/[Ll]ibrary/
+/[Tt]emp/
+/[Uu]nity[Gg]enerated/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+
+# ============================ #
+# Unity3D generated meta files #
+# ============================ #
+*.pidb.meta
+
+# ======================================= #
+# Unity3D Generated File On Crash Reports #
+# ======================================= #
+sysinfo.txt
+
+# ================================== #
+# Unity3D Installed Package Settings #
+# ================================== #
+ProjectSettings/Packages/
+
+# ====== #
+# Builds #
+# ====== #
+*.apk
+*.unitypackage
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+ExportedObj/
+*.svd
+*.userprefs
+*.csproj
+*.pidb
+*.suo
+*.sln
+*.user
+*.unityproj
+*.booproj
+.consulo/
+*.csproj
+*.tmp
+*.svd
+*.pdb
+
+# ================================== #
+# Visual Studio 2015 cache directory #
+# ================================== #
+/.vs/
+hooks/
+lfs/
+ 
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+# Icon?
+ehthumbs.db
+Thumbs.db
+
+# ============== #
+# FMOD generated #
+# ============== #
+.cache/
+.recycle/
+.user/
+.unsaved/
+*.log
+
+# =============================================================== #
+# Arquivos adicionados automaticamente pelo Play Service Resolver #
+# =============================================================== #
+Assets/Plugins/Android/*.aar*
+Assets/Plugins/Android/*.jar*
+.vscode/
+
+Assets/ConsolePro/
+
+Assets/ConsolePro.meta
+
+.idea/
