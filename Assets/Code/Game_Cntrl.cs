@@ -5,7 +5,8 @@ using UnityEngine;
 public class Game_Cntrl : MonoBehaviour
 {
     GameObject Card;
-    Sprite sprite;
+    SpriteRenderer sprite;
+
     public string[] carta = new string[]
 {
         "A_H","K_H","Q_H","J_H","K_H",
@@ -19,13 +20,16 @@ public class Game_Cntrl : MonoBehaviour
     void Start()
     {
         Debug.Log(carta[1]);
-        sprite = Card.GetComponent<Sprite>();
+        sprite = GameObject.Find("Card").GetComponent<SpriteRenderer>();
+
         sprite.name = carta[1];
+
     }
 
     // Update is called once per frame
     void Update()
     {
         
+
     }
 }
