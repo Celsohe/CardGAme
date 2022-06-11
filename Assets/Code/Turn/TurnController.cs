@@ -11,10 +11,8 @@ public sealed class TurnController : MonoBehaviour
 		Player2
 	}
 
-	[SerializeField]
-	private Animator _tableAnimator;
-	[SerializeField]
-	private string _playerTurnParameter = "Player";
+	public delegate void TurnChanged(PlayerTurn turn);
+	public static event TurnChanged OnTurnChanged;
 	
 	private PlayerTurn _currentTurn = PlayerTurn.Player1;
 	
@@ -30,6 +28,9 @@ public sealed class TurnController : MonoBehaviour
 		}
 
 		Debug.Log("Turn changed to " + Enum.GetName(typeof(PlayerTurn), _currentTurn));
-		_tableAnimator.SetInteger(_playerTurnParameter, (int)_currentTurn);
+		if(OnTurnChanged != null)
+		{
+			OnTurnChanged(_currentTurn);
+		}
 	}
 }
