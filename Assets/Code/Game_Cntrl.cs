@@ -10,15 +10,6 @@ public class Game_Cntrl : MonoBehaviour
     Sprite A_H;
 
     public Sprite[] carta;
-//carta[] 
-//{
-//       A_H,
-//        //"K_H","Q_H","J_H","K_H",
-//        //"A_S","K_S","Q_S","J_S","K_S",
-//        //"A_D","K_D","Q_D","J_D","K_D",
-//        //"A_C","K_C","Q_C","J_C","K_C",
-//        //"Back",
-//};
 
 
     void Update()
