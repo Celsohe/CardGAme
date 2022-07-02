@@ -1,36 +1,30 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Code.Game;
 using UnityEngine;
 
 namespace Code.Turn
 {
 	public sealed class TurnController : MonoBehaviour
 	{
-		public enum PlayerTurn
-		{
-			Player1 = 1,
-			Player2
-		}
-
-		public delegate void TurnChanged(PlayerTurn turn);
-
+		public delegate void TurnChanged(Player.Index turn);
 		public static event TurnChanged OnTurnChanged;
-
-		private PlayerTurn _currentTurn = PlayerTurn.Player1;
+		
+		private Player.Index _currentTurn = Player.Index.Player1;
 
 		public void ChangeTurn()
 		{
-			if (_currentTurn == PlayerTurn.Player1)
+			if (_currentTurn == Player.Index.Player1)
 			{
-				_currentTurn = PlayerTurn.Player2;
+				_currentTurn = Player.Index.Player2;
 			}
 			else
 			{
-				_currentTurn = PlayerTurn.Player1;
+				_currentTurn = Player.Index.Player1;
 			}
 
-			Debug.Log("Turn changed to " + Enum.GetName(typeof(PlayerTurn), _currentTurn));
+			Debug.Log("Turn changed to " + Enum.GetName(typeof(Player.Index), _currentTurn));
 			if (OnTurnChanged != null)
 			{
 				OnTurnChanged(_currentTurn);
