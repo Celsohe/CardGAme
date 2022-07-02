@@ -11,7 +11,37 @@ namespace Code.Turn
 		public delegate void TurnChanged(Player.Index turn);
 		public static event TurnChanged OnTurnChanged;
 		
+		private static TurnController _instance;
+		
 		private Player.Index _currentTurn = Player.Index.Player1;
+
+		public static TurnController Instance
+		{
+			get { return _instance; }
+		}
+		
+		public Player.Index CurrentPlayerIndex
+		{
+			get { return _currentTurn; }
+		}
+
+		private void Awake()
+		{
+			if(_instance != null)
+			{
+				Destroy(gameObject);
+				return;
+			}
+			_instance = this;
+		}
+
+		private void OnDestroy()
+		{
+			if (_instance == this)
+			{
+				_instance = null;
+			}
+		}
 
 		public void ChangeTurn()
 		{

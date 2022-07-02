@@ -2,7 +2,7 @@
 {
 	public enum CardSuit
 	{
-		Sword,
+		Swords,
 		Hearts,
 		Diamonds,
 		Clubs

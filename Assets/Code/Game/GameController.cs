@@ -18,9 +18,6 @@ namespace Code.Game
 		public delegate void GameStateChanged(GameStage gameStage);
 		public static event GameStateChanged OnGameStateChanged;
 		
-		[SerializeField]
-		private TurnController _turnController;
-		
 		private GameStage _gameStage;
 
 		private void Start()
@@ -32,7 +29,7 @@ namespace Code.Game
 		{	
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
-				_turnController.ChangeTurn();
+				TurnController.Instance.ChangeTurn();
 			}
 		}
 
