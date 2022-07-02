@@ -20,6 +20,11 @@ namespace Code.Game
 		
 		private GameStage _gameStage;
 
+		private void OnEnable()
+		{
+			CardGiver.OnFinshedGivingCards += OnFinishedGivingCards;
+		}
+
 		private void Start()
 		{
 			SetStage(GameStage.DistributeCards);
@@ -33,6 +38,11 @@ namespace Code.Game
 			}
 		}
 
+		private void OnDisable()
+		{
+			CardGiver.OnFinshedGivingCards -= OnFinishedGivingCards;
+		}
+
 		private void SetStage(GameStage stage)
 		{
 			_gameStage = stage;
@@ -40,6 +50,11 @@ namespace Code.Game
 			{
 				OnGameStateChanged(_gameStage);
 			}
+		}
+
+		private void OnFinishedGivingCards()
+		{
+			SetStage(GameStage.PlayersCreatePiles);
 		}
 	}
 }

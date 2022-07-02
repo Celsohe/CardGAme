@@ -6,6 +6,9 @@ namespace Code.Game
 {
 	public sealed class CardGiver : MonoBehaviour
 	{
+		public delegate void FinshedGivingCards();
+		public static event FinshedGivingCards OnFinshedGivingCards;
+		
 		private void OnEnable()
 		{
 			GameController.OnGameStateChanged += OnGameStageChanged;
@@ -32,6 +35,11 @@ namespace Code.Game
 			{
 				PlayerController.Instance.GetPlayer(Player.Index.Player1).Cards.AddCard(deck.GetRandom());
 				PlayerController.Instance.GetPlayer(Player.Index.Player2).Cards.AddCard(deck.GetRandom());
+			}
+			
+			if(OnFinshedGivingCards != null)
+			{
+				OnFinshedGivingCards();
 			}
 		}
 	}
