@@ -52,8 +52,15 @@ namespace Code.UI
 				cardFace.SetFace(card, _cardVisualSet);
 				float xPosition = firstCardXPosition + i * _cardDistance;
 				cardFace.transform.localPosition = new Vector3(xPosition, 0, 0);
+				cardFace.transform.Rotate(0, 0, 45 - i * 9);
 				cardFace.OrderInLayer = i;
 			}
-		}
+
+
+             void OnMouseOver()
+        {
+				cardFace.transform.localPosition = new Vector3(3, 3, 0);
+			}
+    }
 	}
 }

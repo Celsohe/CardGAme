@@ -282,7 +282,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerIndex: 1
   _cardsParent: {fileID: 651568246}
-  _cardDistance: 1.5
+  _cardDistance: 0.75
   _cardFacePrefab: {fileID: 6100239813874917343, guid: 9920f4c4aa4c20e47aeec12c001167e1, type: 3}
   _cardVisualSet: {fileID: 11400000, guid: 2de31c5add59366438faccdb965ed6a8, type: 2}
 --- !u!1 &686311037
@@ -510,7 +510,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerIndex: 2
   _cardsParent: {fileID: 825755792}
-  _cardDistance: 1.5
+  _cardDistance: 0.75
   _cardFacePrefab: {fileID: 6100239813874917343, guid: 9920f4c4aa4c20e47aeec12c001167e1, type: 3}
   _cardVisualSet: {fileID: 11400000, guid: 2de31c5add59366438faccdb965ed6a8, type: 2}
 --- !u!4 &825755792
