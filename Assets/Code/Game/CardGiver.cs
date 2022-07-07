@@ -8,7 +8,8 @@ namespace Code.Game
 	{
 		public delegate void FinshedGivingCards();
 		public static event FinshedGivingCards OnFinshedGivingCards;
-		
+		[SerializeField] int numCard;
+
 		private void OnEnable()
 		{
 			GameController.OnGameStateChanged += OnGameStageChanged;
@@ -31,7 +32,7 @@ namespace Code.Game
 		{
 			CardSet deck = new CardSet();
 			deck.FillDeck();
-			for(int i = 0; i < 10; i++)
+			for(int i = 0; i < numCard; i++)
 			{
 				PlayerController.Instance.GetPlayer(Player.Index.Player1).Cards.AddCard(deck.GetRandom());
 				PlayerController.Instance.GetPlayer(Player.Index.Player2).Cards.AddCard(deck.GetRandom());
