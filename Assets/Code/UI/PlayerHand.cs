@@ -17,8 +17,6 @@ namespace Code.UI
 		[SerializeField]
 		private float _cardDistance = 2;
 		[SerializeField]
-		private float _cardRotation = 5;
-		[SerializeField]
 		private CardFace _cardFacePrefab;
 		[SerializeField]
 		private CardVisualSet _cardVisualSet;
@@ -71,7 +69,7 @@ namespace Code.UI
 				float xPosition = firstCardXPosition + (i * _cardDistance);
 				
 				cardFace.transform.localPosition = new Vector3(xPosition, 0, 0);
-				cardFace.transform.Rotate(0, 0, 10 - (i+1) * 2);
+				//cardFace.transform.Rotate(0, 0, 10 - (i+1) * 2);
 				//cardFace.transform.localPosition = new Vector3(xPosition, .8f*(float)Math.Sin((180-((i+1) * 18))*(Math.PI)/180), 0);//.8f*(float)(Math.Sin(((i+1)*18))*(Math.PI/180)));
 				//cardFace.transform.Rotate(0, -30 + (i+1) * 6, 10 - (i+1) * 2); //Rotacionar as cartas cardFace.transform.Rotate(0, -80 + i * 16, 40 - i * 8)
 
