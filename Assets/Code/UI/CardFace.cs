@@ -3,10 +3,13 @@ using UnityEngine;
 
 namespace Code.UI
 {
+	[RequireComponent(typeof(BoxCollider))]
 	public sealed class CardFace : MonoBehaviour
 	{
 		[SerializeField]
 		private SpriteRenderer _face;
+		[SerializeField]
+		private BoxCollider _boxCollider = null;
 
 		public int OrderInLayer
 		{
@@ -17,6 +20,22 @@ namespace Code.UI
 			set
 			{
 				_face.sortingOrder = value;
+			}
+		}
+
+		public float Width
+		{
+			get
+			{
+				return _boxCollider.size.x;
+			}
+		}
+
+		public float Height
+		{
+			get
+			{
+				return _boxCollider.size.y;
 			}
 		}
 		
