@@ -18,13 +18,14 @@ namespace Code.UI
 		private float _cardRotation = 15;
 		[SerializeField]
 		private float _rotationPivotDistance = 10f;
+		[Header("Project References")]
 		[SerializeField]
 		private CardFace _cardFacePrefab;
 		[SerializeField]
 		private CardVisualSet _cardVisualSet;
 
 		private List<CardFace> _cards = new List<CardFace>();
-
+		
 		public void OnEnable()
 		{
 			CardGiver.OnFinshedGivingCards += ShowPlayerCards;
@@ -54,6 +55,7 @@ namespace Code.UI
 				Card card = cards[i];
 				CardFace cardFace = Instantiate(_cardFacePrefab, cardPivot.transform);
 				cardFace.SetFace(card, _cardVisualSet);
+				cardFace.SetHolder(this);
 				
 				_cards.Add(cardFace);
 			}

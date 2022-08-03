@@ -100,6 +100,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _face: {fileID: 1161744493762650643}
   _boxCollider: {fileID: 2220321523767582596}
+  _yOffsetWhenSelected: 2
+  _movementSelectionTime: 0.25
+  _movementCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!65 &2220321523767582596
 BoxCollider:
   m_ObjectHideFlags: 0
