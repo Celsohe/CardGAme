@@ -116,7 +116,7 @@
       }
     },
     "com.unity.ide.rider": {
-      "version": "3.0.14",
+      "version": "3.0.15",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -125,7 +125,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.15",
+      "version": "2.0.16",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -187,6 +187,13 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
+    },
+    "studio.bitcake.bitstrap": {
+      "version": "https://github.com/bitcake/bitstrap.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "804800728b5c8758afb60de05495d668a8a63208"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
