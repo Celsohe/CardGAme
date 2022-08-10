@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+//using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using Object = System.Object;
 
 namespace Code.UI.Selection
 {
@@ -53,14 +57,39 @@ namespace Code.UI.Selection
 		{
 			if(Input.GetMouseButtonDown(0))
 			{
-				RaycastHit hit;
-				if(Physics.Raycast(_mainCamera.ScreenPointToRay(Input.mousePosition), out hit))
+				RaycastHit[] hits;
+				List<int> layerList = new List<int>(); 
+				hits = Physics.RaycastAll(_mainCamera.ScreenPointToRay(Input.mousePosition));
+				
+				for (int i = 0; i < hits.Length; i++) 
 				{
-					ISelectable selectable = hit.transform.GetComponent<ISelectable>();
-					if(selectable != null)
+					RaycastHit hit = hits[i];
+					SpriteRenderer renderer = hit.transform.GetComponent<SpriteRenderer>();
+					if (renderer != null)
 					{
-						Selected = selectable;
+						layerList.Add(renderer.sortingOrder);
 					}
+					else
+					{
+						layerList.Add(-1);
+					}
+					
+				}
+
+				int selectIndex = -1;
+				int maxOrder = -1;
+				for (int i = 0; i < hits.Length; i++)
+				{
+					if (layerList[i] > maxOrder)
+					{
+						maxOrder = layerList[i];
+						selectIndex = i;
+					}
+				}
+
+				if (selectIndex > -1)
+				{
+					Selected = hits[selectIndex].transform.GetComponent<ISelectable>();
 				}
 			}
 		}
