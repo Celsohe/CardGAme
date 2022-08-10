@@ -89,7 +89,26 @@ namespace Code.UI.Selection
 
 				if (selectIndex > -1)
 				{
-					Selected = hits[selectIndex].transform.GetComponent<ISelectable>();
+					ISelectable newSelectable = hits[selectIndex].transform.GetComponent<ISelectable>();
+					if (newSelectable != null)
+					{
+						if (newSelectable == Selected)
+						{
+							Selected = null;
+						}
+						else
+						{
+							Selected = newSelectable;
+						}
+					}
+					else
+					{
+						Selected = null;
+					}
+				} 
+				else
+				{
+					Selected = null;
 				}
 			}
 		}
