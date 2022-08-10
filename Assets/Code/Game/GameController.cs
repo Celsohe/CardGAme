@@ -7,42 +7,54 @@ namespace Code.Game
 {
 	public sealed class GameController : MonoBehaviour
 	{
-		[SerializeField]
-		private TurnController _turnController;
+		public enum GameStage
+		{
+			DistributeCards,
+			PlayersCreatePiles,
+			CombatRounds,
+			GameOver
+		}
+		
+		public delegate void GameStateChanged(GameStage gameStage);
+		public static event GameStateChanged OnGameStateChanged;
+		
+		private GameStage _gameStage;
+
+		private void OnEnable()
+		{
+			CardGiver.OnFinshedGivingCards += OnFinishedGivingCards;
+		}
 
 		private void Start()
 		{
-			CardPile player1Pile = new CardPile();
-			Card card = new Card(CardSuit.Clubs, CardValue.Queen);
-			player1Pile.Add(card);
-			card = new Card(CardSuit.Clubs, CardValue.Nine);
-			player1Pile.Add(card);
-			
-			CardPile player2Pile = new CardPile();
-			card = new Card(CardSuit.Diamonds, CardValue.King);
-			player2Pile.Add(card);
-
-			CardPile winner = Combat.Fight(player1Pile, player2Pile);
-			if (winner == player1Pile)
-			{
-				Debug.Log("Player 1 wins");
-			}
-			else if(winner == player2Pile)
-			{
-				Debug.Log("Player 2 wins");
-			}
-			else
-			{
-				Debug.Log("Draw");
-			}
+			SetStage(GameStage.DistributeCards);
 		}
 
 		private void Update()
 		{	
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
-				_turnController.ChangeTurn();
+				TurnController.Instance.ChangeTurn();
 			}
+		}
+
+		private void OnDisable()
+		{
+			CardGiver.OnFinshedGivingCards -= OnFinishedGivingCards;
+		}
+
+		private void SetStage(GameStage stage)
+		{
+			_gameStage = stage;
+			if(OnGameStateChanged != null)
+			{
+				OnGameStateChanged(_gameStage);
+			}
+		}
+
+		private void OnFinishedGivingCards()
+		{
+			SetStage(GameStage.PlayersCreatePiles);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Code.Game;
 
 namespace Code.Turn
 {
@@ -20,7 +21,7 @@ namespace Code.Turn
 			TurnController.OnTurnChanged -= OnTurnChanged;
 		}
 		
-		private void OnTurnChanged(TurnController.PlayerTurn turn)
+		private void OnTurnChanged(Player.Index turn)
 		{
 			_animator.SetInteger(_turnParameterName, (int)turn);
 		}
