@@ -20,11 +20,11 @@ namespace Code.UI
 		private float _rotationPivotDistance = 10f;
 		[Header("Project References")]
 		[SerializeField]
-		private CardFace _cardFacePrefab;
+		private SelectableCard _selectableCardPrefab;
 		[SerializeField]
 		private CardVisualSet _cardVisualSet;
 
-		private List<CardFace> _cards = new List<CardFace>();
+		private List<SelectableCard> _cards = new List<SelectableCard>();
 		
 		public void OnEnable()
 		{
@@ -53,11 +53,11 @@ namespace Code.UI
 				GameObject cardPivot = new GameObject("CardPivot");
 				cardPivot.transform.SetParent(_cardsParent, false);
 				Card card = cards[i];
-				CardFace cardFace = Instantiate(_cardFacePrefab, cardPivot.transform);
-				cardFace.SetFace(card, _cardVisualSet);
-				cardFace.SetHolder(this);
+				SelectableCard selectableCard = Instantiate(_selectableCardPrefab, cardPivot.transform);
+				selectableCard.GetComponent<CardFace>().SetFace(card, _cardVisualSet);
+				selectableCard.SetHolder(this);
 				
-				_cards.Add(cardFace);
+				_cards.Add(selectableCard);
 			}
 		}
 
@@ -70,18 +70,18 @@ namespace Code.UI
 			
 			for (int i = 0; i < totalCards; i++)
 			{
-				CardFace cardFace = _cards[i];
+				SelectableCard selectableCard = _cards[i];
 
-				Transform pivot = cardFace.transform.parent;
+				Transform pivot = selectableCard.transform.parent;
 				
 				pivot.localPosition = new Vector3(0, -_rotationPivotDistance, 0);
-				cardFace.transform.localPosition = new Vector3(0, _rotationPivotDistance, 0);
+				selectableCard.transform.localPosition = new Vector3(0, _rotationPivotDistance, 0);
 
 				Quaternion rotation = Quaternion.Euler(0, 0, firstCardAngle - (i * _cardRotation));
 				
 				pivot.localRotation = rotation;
 
-				cardFace.OrderInLayer = i;
+				selectableCard.GetComponent<CardFace>().OrderInLayer = i;
 			}
 		}
 	}
