@@ -10,6 +10,8 @@ namespace Code.UI
 		[SerializeField]
 		private SpriteRenderer _face;
 
+		private Card _card;
+
 		public int OrderInLayer
 		{
 			get
@@ -21,9 +23,18 @@ namespace Code.UI
 				_face.sortingOrder = value;
 			}
 		}
+
+		public Card Card
+		{
+			get
+			{
+				return _card;
+			}
+		}
 		
 		public void SetFace(Card card, CardVisualSet visualSet)
 		{
+			_card = card;
 			_face.sprite = visualSet.GetCardSprite(card);
 		}
 	}

@@ -71,6 +71,19 @@ namespace Code.UI
 			_playerHand = playerHand;
 		}
 
+		public bool RemoveSelfFromHand()
+		{
+			if (_playerHand != null)
+			{
+				if (_playerHand.RemoveCard(this))
+				{
+					Destroy(gameObject);
+					return true;
+				}
+			}
+			return false;
+		}
+
 		private IEnumerator MoveTo(Vector3 localPosition)
 		{
 			Vector3 startPosition = transform.localPosition;

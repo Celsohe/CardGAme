@@ -36,6 +36,21 @@ namespace Code.UI
 			CardGiver.OnFinshedGivingCards -= ShowPlayerCards;
 		}
 
+		public void AddCard(Card card)
+		{
+			// TODO: Add card to hand
+		}
+		
+		public bool RemoveCard(SelectableCard card)
+		{
+			if (_cards.Remove(card))
+			{
+				Reorder();
+				return true;
+			}
+			return false;
+		}
+
         private void ShowPlayerCards()
 		{
 			InstantiateCards();

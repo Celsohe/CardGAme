@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-//using System.Linq;
-using UnityEditor.Experimental.GraphView;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using Object = System.Object;
 
 namespace Code.UI.Selection
 {
@@ -13,6 +9,7 @@ namespace Code.UI.Selection
 
 		[SerializeField]
 		private Camera _mainCamera = null;
+		
 		private ISelectable _selected;
 		
 		public static Selector Instance
@@ -57,39 +54,25 @@ namespace Code.UI.Selection
 		{
 			if(Input.GetMouseButtonDown(0))
 			{
-				RaycastHit[] hits;
-				List<int> layerList = new List<int>(); 
-				hits = Physics.RaycastAll(_mainCamera.ScreenPointToRay(Input.mousePosition));
-				
-				for (int i = 0; i < hits.Length; i++) 
-				{
-					RaycastHit hit = hits[i];
-					SpriteRenderer renderer = hit.transform.GetComponent<SpriteRenderer>();
-					if (renderer != null)
-					{
-						layerList.Add(renderer.sortingOrder);
-					}
-					else
-					{
-						layerList.Add(-1);
-					}
-					
-				}
+				GameObject hitObjectOnTop = GetHitObjectOnTop();
 
-				int selectIndex = -1;
-				int maxOrder = -1;
-				for (int i = 0; i < hits.Length; i++)
+				if (hitObjectOnTop != null)
 				{
-					if (layerList[i] > maxOrder)
+					// TODO: Try to interact
+					if (Selected != null)
 					{
-						maxOrder = layerList[i];
-						selectIndex = i;
+						IInteractable interactable = hitObjectOnTop.GetComponent<IInteractable>();
+						if (interactable != null)
+						{
+							if (interactable.Interact(Selected))
+							{
+								Selected = null;
+								return;
+							}
+						}
 					}
-				}
 
-				if (selectIndex > -1)
-				{
-					ISelectable newSelectable = hits[selectIndex].transform.GetComponent<ISelectable>();
+					ISelectable newSelectable = hitObjectOnTop.GetComponent<ISelectable>();
 					if (newSelectable != null)
 					{
 						if (newSelectable == Selected)
@@ -119,6 +102,44 @@ namespace Code.UI.Selection
 			{
 				_instance = null;
 			}
+		}
+
+		// TODO: Use SortingLayer to determine priority
+		private GameObject GetHitObjectOnTop()
+		{
+			RaycastHit[] hits;
+			List<int> layerList = new List<int>(); 
+			hits = Physics.RaycastAll(_mainCamera.ScreenPointToRay(Input.mousePosition), 100f);
+				
+			for (int i = 0; i < hits.Length; i++) 
+			{
+				RaycastHit hit = hits[i];
+				SpriteRenderer renderer = hit.transform.GetComponent<SpriteRenderer>();
+				if (renderer != null)
+				{
+					layerList.Add(renderer.sortingOrder);
+				}
+				else
+				{
+					layerList.Add(-1);
+				}
+			}
+
+			int selectIndex = -1;
+			int maxOrder = -1;
+			for (int i = 0; i < hits.Length; i++)
+			{
+				if (layerList[i] > maxOrder)
+				{
+					maxOrder = layerList[i];
+					selectIndex = i;
+				}
+			}
+			if (selectIndex > -1)
+			{
+				return hits[selectIndex].transform.gameObject;
+			}
+			return null;
 		}
 	}
 }
