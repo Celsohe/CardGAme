@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Code.Cards;
 using Code.Game;
+using Code.Turn;
 using Code.UI.Selection;
 using UnityEngine;
 
@@ -8,19 +10,40 @@ namespace Code.UI
 {
 	public sealed class CardPileFace : MonoBehaviour, ISelectable, IInteractable
 	{
+		[Header("Configuration")]
 		[SerializeField]
 		private Player.Index _playerIndex;
 		[SerializeField]
 		private CardFace _cardFacePrefab;
 		[SerializeField]
 		private CardVisualSet _cardVisualSet;
+		[Header("Components")]
+		[SerializeField]
+		private Transform _cardsParent;
+		[SerializeField]
+		private GameObject _cover;
 		[Header("Presentation")]
 		[SerializeField]
 		private float _cardDistance = .2f;
 		
 		private CardPile _cardPile = new CardPile();
 		private List<CardFace> _cardFaces = new List<CardFace>();
-		
+
+		private void OnEnable()
+		{
+			TurnController.OnTurnChanged += OnTurnChanged;
+		}
+
+		private void Start()
+		{
+			OnTurnChanged(TurnController.Instance.CurrentPlayerIndex);
+		}
+
+		private void OnDisable()
+		{
+			TurnController.OnTurnChanged -= OnTurnChanged;
+		}
+
 		public void Select()
 		{
 			// TODO
@@ -33,6 +56,11 @@ namespace Code.UI
 
 		public bool Interact(ISelectable selectedObject)
 		{
+			if (TurnController.Instance.CurrentPlayerIndex != _playerIndex)
+			{
+				return false;
+			}
+			
 			if (selectedObject == null)
 			{
 				Card topCard = RemoveCardFromPile();
@@ -60,7 +88,7 @@ namespace Code.UI
 		{
 			_cardPile.Add(card);
 			
-			CardFace cardFace = Instantiate(_cardFacePrefab, transform);
+			CardFace cardFace = Instantiate(_cardFacePrefab, _cardsParent);
 			cardFace.SetFace(card, _cardVisualSet);
 			cardFace.OrderInLayer = _cardFaces.Count;
 			_cardFaces.Add(cardFace);
@@ -89,6 +117,20 @@ namespace Code.UI
 				cardPosition.y = -_cardDistance * i;
 				_cardFaces[i].transform.localPosition = cardPosition;
 				_cardFaces[i].OrderInLayer = i;
+			}
+		}
+
+		private void OnTurnChanged(Player.Index turn)
+		{
+			if (turn == _playerIndex)
+			{
+				_cardsParent.gameObject.SetActive(true);
+				_cover.SetActive(false);
+			}
+			else
+			{
+				_cardsParent.gameObject.SetActive(false);
+				_cover.SetActive(true);
 			}
 		}
 	}

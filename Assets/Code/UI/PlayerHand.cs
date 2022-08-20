@@ -50,13 +50,18 @@ namespace Code.UI
 			return null;
 		}
 		
-		public void OnEnable()
+		private void OnEnable()
 		{
 			_playerHands.Add(this);
 			TurnController.OnTurnChanged += OnTurnChanged;
 		}
 
-		public void OnDisable()
+		private void Start()
+		{
+			OnTurnChanged(TurnController.Instance.CurrentPlayerIndex);
+		}
+
+		private void OnDisable()
 		{
 			_playerHands.Remove(this);
 			TurnController.OnTurnChanged -= OnTurnChanged;
