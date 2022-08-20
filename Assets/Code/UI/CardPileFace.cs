@@ -11,6 +11,9 @@ namespace Code.UI
 		private CardFace _cardFacePrefab;
 		[SerializeField]
 		private CardVisualSet _cardVisualSet;
+		[Header("Presentation")]
+		[SerializeField]
+		private float _cardDistance = .2f;
 		
 		private CardPile _cardPile = new CardPile();
 		private List<CardFace> _cardFaces = new List<CardFace>();
@@ -57,7 +60,13 @@ namespace Code.UI
 
 		private void Refresh()
 		{
-			// TODO: Tarefa!!
+			for (int i = 0; i < _cardFaces.Count; i++)
+			{
+				Vector3 cardPosition = _cardFaces[i].transform.localPosition;
+				cardPosition.y = -_cardDistance * i;
+				_cardFaces[i].transform.localPosition = cardPosition;
+				_cardFaces[i].OrderInLayer = i;
+			}
 		}
 	}
 }
