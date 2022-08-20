@@ -27,21 +27,18 @@ namespace Code.UI
 		private CardVisualSet _cardVisualSet;
 
 		private List<SelectableCard> _cards = new List<SelectableCard>();
-		
-		public void OnEnable()
-		{
-			_playerHands.Add(this);
-			CardGiver.OnFinshedGivingCards += ShowPlayerCards;
-		}
 
-		public void OnDisable()
+		public static IReadOnlyList<PlayerHand> All
 		{
-			_playerHands.Remove(this);
-			CardGiver.OnFinshedGivingCards -= ShowPlayerCards;
+			get
+			{
+				return _playerHands.AsReadOnly();
+			}
 		}
 
 		public static PlayerHand GetPlayerHand(Player.Index playerIndex)
 		{
+			// Abaixo uma maneira de fazer a busca por um elemento da lista usando "predicado", ao invés de usar um loop:
 			//return _playerHands.Find(x => x._playerIndex == playerIndex);
 			for(int i = 0; i < _playerHands.Count; i++)
 			{
@@ -51,6 +48,16 @@ namespace Code.UI
 				}
 			}
 			return null;
+		}
+		
+		public void OnEnable()
+		{
+			_playerHands.Add(this);
+		}
+
+		public void OnDisable()
+		{
+			_playerHands.Remove(this);
 		}
 		
 		public void AddCard(Card card)
@@ -74,24 +81,6 @@ namespace Code.UI
 				return true;
 			}
 			return false;
-		}
-
-        private void ShowPlayerCards()
-		{
-			InstantiateCards();
-			Reorder();
-		}
-
-		private void InstantiateCards()
-		{
-			CardSet playerCards = PlayerController.Instance.GetPlayer(_playerIndex).Cards;//TurnController.Instance.CurrentPlayerIndex).Cards;
-			IReadOnlyList<Card> cards = playerCards.Cards;
-			int totalCards = cards.Count;
-			
-			for (int i = 0; i < totalCards; i++)
-			{
-				AddCard(cards[i]);
-			}
 		}
 
 		[Button]

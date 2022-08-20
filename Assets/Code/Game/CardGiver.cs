@@ -1,5 +1,6 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Code.Cards;
+using Code.UI;
 using UnityEngine;
 
 namespace Code.Game
@@ -32,10 +33,15 @@ namespace Code.Game
 		{
 			CardSet deck = new CardSet();
 			deck.FillDeck();
+
+			IReadOnlyList<PlayerHand> playerHands = PlayerHand.All;
+
 			for(int i = 0; i < numCard; i++)
 			{
-				PlayerController.Instance.GetPlayer(Player.Index.Player1).Cards.AddCard(deck.GetRandom());
-				PlayerController.Instance.GetPlayer(Player.Index.Player2).Cards.AddCard(deck.GetRandom());
+				for (int j = 0; j < playerHands.Count; j++)
+				{
+					playerHands[j].AddCard(deck.GetRandom());
+				}
 			}
 			
 			if(OnFinshedGivingCards != null)
