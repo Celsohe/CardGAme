@@ -53,11 +53,13 @@ namespace Code.UI
 		public void OnEnable()
 		{
 			_playerHands.Add(this);
+			TurnController.OnTurnChanged += OnTurnChanged;
 		}
 
 		public void OnDisable()
 		{
 			_playerHands.Remove(this);
+			TurnController.OnTurnChanged -= OnTurnChanged;
 		}
 		
 		public void AddCard(Card card)
@@ -105,6 +107,11 @@ namespace Code.UI
 
 				selectableCard.GetComponent<CardFace>().OrderInLayer = i;
 			}
+		}
+
+		private void OnTurnChanged(Player.Index turn)
+		{
+			_cardsParent.gameObject.SetActive(turn == _playerIndex);
 		}
 	}
 }
