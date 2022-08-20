@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Code.Cards;
+using Code.Game;
 using Code.UI.Selection;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ namespace Code.UI
 {
 	public sealed class CardPileFace : MonoBehaviour, ISelectable, IInteractable
 	{
+		[SerializeField]
+		private Player.Index _playerIndex;
 		[SerializeField]
 		private CardFace _cardFacePrefab;
 		[SerializeField]
@@ -30,7 +33,20 @@ namespace Code.UI
 
 		public bool Interact(ISelectable selectedObject)
 		{
-			if (selectedObject is SelectableCard)
+			if (selectedObject == null)
+			{
+				Card topCard = RemoveCardFromPile();
+				if(topCard != null)
+				{
+					PlayerHand playerHand = PlayerHand.GetPlayerHand(_playerIndex);
+					if (playerHand != null)
+					{
+						playerHand.AddCard(topCard);
+						return true;
+					}
+				}
+			}
+			else if (selectedObject is SelectableCard)
 			{
 				SelectableCard selectedCard = (SelectableCard) selectedObject;
 				AddCardToPile(selectedCard.GetComponent<CardFace>().Card);
@@ -54,8 +70,15 @@ namespace Code.UI
 		
 		public Card RemoveCardFromPile()
 		{
-			// TODO
-			return null;
+			Card topCard = _cardPile.RemoveTopCard();
+			if (topCard != null)
+			{
+				CardFace cardFace = _cardFaces[_cardFaces.Count - 1];
+				_cardFaces.RemoveAt(_cardFaces.Count - 1);
+				Destroy(cardFace.gameObject);
+				Refresh();
+			}
+			return topCard;
 		}
 
 		private void Refresh()

@@ -7,6 +7,14 @@ namespace Code.Cards
 	public sealed class CardPile
 	{
 		private List<Card> _cards = new List<Card>();
+
+		public int Count
+		{
+			get
+			{
+				return _cards.Count;
+			}
+		}
 		
 		public int Value
 		{
@@ -69,7 +77,7 @@ namespace Code.Cards
 		public CardPile()
 		{
 			_cards = new List<Card>();
-			Debug.Log("CardPile created");
+			//Debug.Log("CardPile created");
 		}
 
 		public CardPile(CardPile original)
@@ -80,12 +88,23 @@ namespace Code.Cards
 		public void Add(Card card)
 		{
 			_cards.Add(card);
-			Debug.Log($"Card {Enum.GetName(typeof(CardValue), card.Value)} {Enum.GetName(typeof(CardSuit), card.Suit)} added to pile");
+			//Debug.Log($"Card {Enum.GetName(typeof(CardValue), card.Value)} {Enum.GetName(typeof(CardSuit), card.Suit)} added to pile");
 		}
 		
 		public void Remove(Card card)
 		{
 			_cards.Remove(card);
+		}
+
+		public Card RemoveTopCard()
+		{
+			if(_cards.Count > 0)
+			{
+				Card card = _cards[_cards.Count - 1];
+				_cards.RemoveAt(_cards.Count - 1);
+				return card;
+			}
+			return null;
 		}
 	}
 }

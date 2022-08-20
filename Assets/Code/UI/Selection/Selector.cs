@@ -59,8 +59,8 @@ namespace Code.UI.Selection
 				if (hitObjectOnTop != null)
 				{
 					// TODO: Try to interact
-					if (Selected != null)
-					{
+					//if (Selected != null)
+					//{
 						IInteractable interactable = hitObjectOnTop.GetComponent<IInteractable>();
 						if (interactable != null)
 						{
@@ -70,7 +70,7 @@ namespace Code.UI.Selection
 								return;
 							}
 						}
-					}
+					//}
 
 					ISelectable newSelectable = hitObjectOnTop.GetComponent<ISelectable>();
 					if (newSelectable != null)

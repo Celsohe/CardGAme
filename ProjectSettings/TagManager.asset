@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: TableCards
+    uniqueID: 2095353125
+    locked: 0
+  - name: HandCards
+    uniqueID: 335923117
+    locked: 0

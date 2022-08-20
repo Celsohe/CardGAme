@@ -144,6 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cda5d2118ba4058842549586f4fa8a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerIndex: 1
   _cardFacePrefab: {fileID: 6100239813874917343, guid: 57ed9968d977e0441acf15ce14776ca2, type: 3}
   _cardVisualSet: {fileID: 11400000, guid: 2de31c5add59366438faccdb965ed6a8, type: 2}
   _cardDistance: 1

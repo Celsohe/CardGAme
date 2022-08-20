@@ -10,6 +10,8 @@ namespace Code.UI
 {
 	public sealed class PlayerHand : MonoBehaviour
 	{
+		private static List<PlayerHand> _playerHands = new List<PlayerHand>();
+		
 		[SerializeField]
 		private Player.Index _playerIndex;
 		[SerializeField]
@@ -28,23 +30,46 @@ namespace Code.UI
 		
 		public void OnEnable()
 		{
+			_playerHands.Add(this);
 			CardGiver.OnFinshedGivingCards += ShowPlayerCards;
 		}
 
 		public void OnDisable()
 		{
+			_playerHands.Remove(this);
 			CardGiver.OnFinshedGivingCards -= ShowPlayerCards;
 		}
 
+		public static PlayerHand GetPlayerHand(Player.Index playerIndex)
+		{
+			//return _playerHands.Find(x => x._playerIndex == playerIndex);
+			for(int i = 0; i < _playerHands.Count; i++)
+			{
+				if(_playerHands[i]._playerIndex == playerIndex)
+				{
+					return _playerHands[i];
+				}
+			}
+			return null;
+		}
+		
 		public void AddCard(Card card)
 		{
-			// TODO: Add card to hand
+			GameObject cardPivot = new GameObject("CardPivot");
+			cardPivot.transform.SetParent(_cardsParent, false);
+			SelectableCard selectableCard = Instantiate(_selectableCardPrefab, cardPivot.transform);
+			selectableCard.GetComponent<CardFace>().SetFace(card, _cardVisualSet);
+			selectableCard.SetHolder(this);
+				
+			_cards.Add(selectableCard);
+			Reorder();
 		}
 		
 		public bool RemoveCard(SelectableCard card)
 		{
 			if (_cards.Remove(card))
 			{
+				Destroy(card.transform.parent.gameObject);
 				Reorder();
 				return true;
 			}
@@ -65,14 +90,7 @@ namespace Code.UI
 			
 			for (int i = 0; i < totalCards; i++)
 			{
-				GameObject cardPivot = new GameObject("CardPivot");
-				cardPivot.transform.SetParent(_cardsParent, false);
-				Card card = cards[i];
-				SelectableCard selectableCard = Instantiate(_selectableCardPrefab, cardPivot.transform);
-				selectableCard.GetComponent<CardFace>().SetFace(card, _cardVisualSet);
-				selectableCard.SetHolder(this);
-				
-				_cards.Add(selectableCard);
+				AddCard(cards[i]);
 			}
 		}
 
