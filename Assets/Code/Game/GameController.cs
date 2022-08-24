@@ -15,10 +15,39 @@ namespace Code.Game
 			GameOver
 		}
 		
+		// Evento usado para avisar quando o jogo troca de estado //
 		public delegate void GameStateChanged(GameStage gameStage);
 		public static event GameStateChanged OnGameStateChanged;
+
+		private static GameController _instance;
 		
 		private GameStage _gameStage;
+		
+		public static GameController Instance
+		{
+			get
+			{
+				return _instance;
+			}
+		}
+
+		public GameStage Stage
+		{
+			get
+			{
+				return _gameStage;
+			}
+		}
+
+		private void Awake()
+		{
+			if (_instance != null)
+			{
+				Destroy(gameObject);
+				return;
+			}
+			_instance = this;
+		}
 
 		private void OnEnable()
 		{
@@ -41,6 +70,14 @@ namespace Code.Game
 		private void OnDisable()
 		{
 			CardGiver.OnFinshedGivingCards -= OnFinishedGivingCards;
+		}
+
+		private void OnDestroy()
+		{
+			if (_instance == this)
+			{
+				_instance = null;
+			}
 		}
 
 		private void SetStage(GameStage stage)

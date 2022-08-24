@@ -10,6 +10,8 @@ namespace Code.UI
 {
 	public sealed class CardPileFace : MonoBehaviour, ISelectable, IInteractable
 	{
+		private static List<CardPileFace> _all = new List<CardPileFace>();
+		
 		[Header("Configuration")]
 		[SerializeField]
 		private Player.Index _playerIndex;
@@ -29,9 +31,31 @@ namespace Code.UI
 		private CardPile _cardPile = new CardPile();
 		private List<CardFace> _cardFaces = new List<CardFace>();
 
+		public static List<CardPileFace> GetCardPilesFromPlayer(Player.Index playerIndex)
+		{
+			List<CardPileFace> playerCardPiles = new List<CardPileFace>();
+			for (int i = 0; i < _all.Count; i++)
+			{
+				if (_all[i]._playerIndex == playerIndex)
+				{
+					playerCardPiles.Add(_all[i]);
+				}
+			}
+			return playerCardPiles;
+		}
+
+		public int Count
+		{
+			get
+			{
+				return _cardPile.Count;
+			}
+		}
+		
 		private void OnEnable()
 		{
 			TurnController.OnTurnChanged += OnTurnChanged;
+			_all.Add(this);
 		}
 
 		private void Start()
@@ -42,6 +66,7 @@ namespace Code.UI
 		private void OnDisable()
 		{
 			TurnController.OnTurnChanged -= OnTurnChanged;
+			_all.Remove(this);
 		}
 
 		public void Select()

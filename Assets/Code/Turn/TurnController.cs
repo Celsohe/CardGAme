@@ -33,6 +33,8 @@ namespace Code.Turn
 				return;
 			}
 			_instance = this;
+
+			GameController.OnGameStateChanged += OnGameStateChanged;
 		}
 
 		private void OnDestroy()
@@ -41,6 +43,8 @@ namespace Code.Turn
 			{
 				_instance = null;
 			}
+			
+			GameController.OnGameStateChanged -= OnGameStateChanged;
 		}
 
 		public void ChangeTurn()
@@ -58,6 +62,17 @@ namespace Code.Turn
 			if (OnTurnChanged != null)
 			{
 				OnTurnChanged(_currentTurn);
+			}
+		}
+
+		private void OnGameStateChanged(GameController.GameStage gameStage)
+		{
+			if (gameStage == GameController.GameStage.PlayersCreatePiles)
+			{
+				if (OnTurnChanged != null)
+				{
+					OnTurnChanged(_currentTurn);
+				}
 			}
 		}
 	}

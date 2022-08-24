@@ -10,6 +10,10 @@ namespace Code.UI
 {
 	public sealed class PlayerHand : MonoBehaviour
 	{
+		// Evento para avisar que a mão ficou vazia
+		public delegate void PlayHandEvent(int cardsCount);
+		public event PlayHandEvent OnCardsUpdated;
+		
 		private static List<PlayerHand> _playerHands = new List<PlayerHand>();
 		
 		[SerializeField]
@@ -77,6 +81,11 @@ namespace Code.UI
 				
 			_cards.Add(selectableCard);
 			Reorder();
+
+			if (OnCardsUpdated != null)
+			{
+				OnCardsUpdated.Invoke(_cards.Count);
+			}
 		}
 		
 		public bool RemoveCard(SelectableCard card)
@@ -85,6 +94,12 @@ namespace Code.UI
 			{
 				Destroy(card.transform.parent.gameObject);
 				Reorder();
+				
+				if (OnCardsUpdated != null)
+				{
+					OnCardsUpdated.Invoke(_cards.Count);
+				}
+				
 				return true;
 			}
 			return false;
