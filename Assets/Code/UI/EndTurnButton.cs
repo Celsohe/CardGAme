@@ -36,8 +36,16 @@ namespace Code.UI
 		private void OnDestroy()
 		{
 			TurnController.OnTurnChanged -= OnTurnChanged;
-			PlayerHand.GetPlayerHand(Player.Index.Player1).OnCardsUpdated -= OnPlayerHandCardsUpdated;
-			PlayerHand.GetPlayerHand(Player.Index.Player2).OnCardsUpdated -= OnPlayerHandCardsUpdated;
+			PlayerHand player1Hand = PlayerHand.GetPlayerHand(Player.Index.Player1);
+			if (player1Hand != null)
+			{
+				player1Hand.OnCardsUpdated -= OnPlayerHandCardsUpdated;
+			}
+			PlayerHand player2Hand = PlayerHand.GetPlayerHand(Player.Index.Player2);
+			if (player2Hand != null)
+			{
+				player2Hand.OnCardsUpdated -= OnPlayerHandCardsUpdated;	
+			}
 		}
 
 		private void OnTurnChanged(Player.Index turn)
