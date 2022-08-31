@@ -79,7 +79,7 @@ namespace Code.UI.Selection
 						{
 							Selected = null;
 						}
-						else
+						else if(newSelectable.IsSelectable)
 						{
 							Selected = newSelectable;
 						}
@@ -104,7 +104,11 @@ namespace Code.UI.Selection
 			}
 		}
 
-		// TODO: Use SortingLayer to determine priority
+		public void UnselectAny()
+		{
+			Selected = null;
+		}
+		
 		private GameObject GetHitObjectOnTop()
 		{
 			RaycastHit[] hits;

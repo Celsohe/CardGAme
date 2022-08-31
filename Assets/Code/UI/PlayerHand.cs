@@ -40,6 +40,14 @@ namespace Code.UI
 			}
 		}
 
+		public int CardsCount
+		{
+			get
+			{
+				return _cards.Count;
+			}
+		}
+
 		public static PlayerHand GetPlayerHand(Player.Index playerIndex)
 		{
 			// Abaixo uma maneira de fazer a busca por um elemento da lista usando "predicado", ao invés de usar um loop:

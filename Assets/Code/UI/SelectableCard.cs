@@ -23,6 +23,14 @@ namespace Code.UI
 		
 		private Vector3 _originalPosition;
 		private IEnumerator _moveCoroutine;
+
+		public bool IsSelectable
+		{
+			get
+			{
+				return true;
+			}
+		}
 		
 		public float Width
 		{

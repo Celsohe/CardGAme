@@ -21,21 +21,13 @@ namespace Code.UI
 		private void Awake()
 		{
 			TurnController.OnTurnChanged += OnTurnChanged;
-		}
-		
-		private void OnEnable()
-		{
-			
-		}
-
-		private void OnDisable()
-		{
-			
+			GameController.OnGameStateChanged += OnGameStateChanged;
 		}
 
 		private void OnDestroy()
 		{
 			TurnController.OnTurnChanged -= OnTurnChanged;
+			GameController.OnGameStateChanged -= OnGameStateChanged;
 			PlayerHand player1Hand = PlayerHand.GetPlayerHand(Player.Index.Player1);
 			if (player1Hand != null)
 			{
@@ -86,6 +78,15 @@ namespace Code.UI
 				}
 			}
 			return true;
+		}
+
+		private void OnGameStateChanged(GameController.GameStage gameStage)
+		{
+			if (gameStage == GameController.GameStage.CombatRounds)
+			{
+				gameObject.SetActive(false);
+				GameController.OnGameStateChanged -= OnGameStateChanged;
+			}
 		}
 	}
 }

@@ -58,7 +58,6 @@ namespace Code.Turn
 				_currentTurn = Player.Index.Player1;
 			}
 
-			Debug.Log("Turn changed to " + Enum.GetName(typeof(Player.Index), _currentTurn));
 			if (OnTurnChanged != null)
 			{
 				OnTurnChanged(_currentTurn);

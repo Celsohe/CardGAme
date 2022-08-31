@@ -10,6 +10,13 @@ namespace Code.UI
 {
 	public sealed class CardPileFace : MonoBehaviour, ISelectable, IInteractable
 	{
+		public enum State
+		{
+			Ready,
+			Winner,
+			Loser
+		}
+		
 		private static List<CardPileFace> _all = new List<CardPileFace>();
 		
 		[Header("Configuration")]
@@ -24,12 +31,51 @@ namespace Code.UI
 		private Transform _cardsParent;
 		[SerializeField]
 		private GameObject _cover;
+		[SerializeField]
+		private ParticleSystem _selectParticleSystem;
+		[SerializeField]
+		private ParticleSystem _victoryParticleSystem;
+		[SerializeField]
+		private ParticleSystem _defeatParticleSystem;
 		[Header("Presentation")]
 		[SerializeField]
 		private float _cardDistance = .2f;
 		
 		private CardPile _cardPile = new CardPile();
 		private List<CardFace> _cardFaces = new List<CardFace>();
+		private State _state = State.Ready;
+
+		public bool IsSelectable
+		{
+			get
+			{
+				switch (GameController.Instance.Stage)
+				{
+					case GameController.GameStage.DistributeCards:
+						return false;
+					case GameController.GameStage.PlayersCreatePiles:
+						return false;
+					case GameController.GameStage.CombatRounds:
+						if (_state == State.Ready)
+						{
+							return true;
+						}
+						return false;
+					case GameController.GameStage.GameOver:
+						return false;
+					default:
+						return false;
+				}
+			}
+		}
+
+		public State PileState
+		{
+			get
+			{
+				return _state;
+			}
+		}
 
 		public static List<CardPileFace> GetCardPilesFromPlayer(Player.Index playerIndex)
 		{
@@ -71,41 +117,77 @@ namespace Code.UI
 
 		public void Select()
 		{
-			// TODO
+			_selectParticleSystem.Play(true);
 		}
 
 		public void Unselect()
 		{
-			// TODO
+			_selectParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
 		}
 
 		public bool Interact(ISelectable selectedObject)
 		{
-			if (TurnController.Instance.CurrentPlayerIndex != _playerIndex)
+			switch (GameController.Instance.Stage)
 			{
-				return false;
-			}
-			
-			if (selectedObject == null)
-			{
-				Card topCard = RemoveCardFromPile();
-				if(topCard != null)
-				{
-					PlayerHand playerHand = PlayerHand.GetPlayerHand(_playerIndex);
-					if (playerHand != null)
+				case GameController.GameStage.PlayersCreatePiles:
+					if (TurnController.Instance.CurrentPlayerIndex != _playerIndex)
 					{
-						playerHand.AddCard(topCard);
+						return false;
+					}
+			
+					if (selectedObject == null)
+					{
+						Card topCard = RemoveCardFromPile();
+						if(topCard != null)
+						{
+							PlayerHand playerHand = PlayerHand.GetPlayerHand(_playerIndex);
+							if (playerHand != null)
+							{
+								playerHand.AddCard(topCard);
+								return true;
+							}
+						}
+					}
+					else if (selectedObject is SelectableCard)
+					{
+						SelectableCard selectedCard = (SelectableCard) selectedObject;
+						AddCardToPile(selectedCard.GetComponent<CardFace>().Card);
+						selectedCard.RemoveSelfFromHand();
 						return true;
 					}
-				}
+					break;
+				case GameController.GameStage.CombatRounds:
+					if (_state != State.Ready)
+					{
+						break;
+					}
+					if (selectedObject == null)
+					{
+						break;
+					}
+					if (selectedObject is CardPileFace)
+					{
+						CardPileFace otherPile = (CardPileFace)selectedObject;
+						if (_playerIndex != otherPile._playerIndex)
+						{
+							CardPile winnerPile = Combat.Fight(_cardPile, otherPile._cardPile);
+							if (winnerPile == _cardPile)
+							{
+								SetState(State.Winner);
+								otherPile.SetState(State.Loser);
+							}
+							else
+							{
+								SetState(State.Loser);
+								otherPile.SetState(State.Winner);
+							}
+							Selector.Instance.UnselectAny();
+							TurnController.Instance.ChangeTurn();
+						}
+					}
+					break;
 			}
-			else if (selectedObject is SelectableCard)
-			{
-				SelectableCard selectedCard = (SelectableCard) selectedObject;
-				AddCardToPile(selectedCard.GetComponent<CardFace>().Card);
-				selectedCard.RemoveSelfFromHand();
-				return true;
-			}
+			
 			return false;
 		}
 		
@@ -156,6 +238,22 @@ namespace Code.UI
 			{
 				_cardsParent.gameObject.SetActive(false);
 				_cover.SetActive(true);
+			}
+		}
+
+		private void SetState(State state)
+		{
+			_state = state;
+			switch (state)
+			{
+				case State.Ready:
+					break;
+				case State.Winner:
+					_victoryParticleSystem.Play();
+					break;
+				case State.Loser:
+					_defeatParticleSystem.Play();
+					break;
 			}
 		}
 	}

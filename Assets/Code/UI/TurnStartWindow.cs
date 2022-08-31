@@ -13,16 +13,29 @@ namespace Code.UI
 		private void Awake()
 		{
 			TurnController.OnTurnChanged += OnTurnChanged;
+			GameController.OnGameStateChanged += OnGameStateChanged;
 		}
 
 		private void OnDestroy()
 		{
 			TurnController.OnTurnChanged -= OnTurnChanged;
+			GameController.OnGameStateChanged -= OnGameStateChanged;
 		}
 
 		private void OnTurnChanged(Player.Index turn)
 		{
-			_content.SetActive(true);
+			if (GameController.Instance.Stage != GameController.GameStage.GameOver)
+			{
+				_content.SetActive(true);
+			}
+		}
+		
+		private void OnGameStateChanged(GameController.GameStage stage)
+		{
+			if (stage == GameController.GameStage.GameOver)
+			{
+				_content.SetActive(false);
+			}
 		}
 	}
 }
