@@ -1,7 +1,12 @@
 ﻿namespace Code.Cards
 {
 	public sealed class Combat
-	{
+	{/// <summary>
+	 /// Method compare two piles of cards then show who is the winner. 
+	 /// </summary>
+	 /// <param name="pileA"></param>
+	 /// <param name="pileB"></param>
+	 /// <returns></returns>
 		public static CardPile Fight(CardPile pileA, CardPile pileB)
 		{
 			Combatant combatantA = new Combatant();

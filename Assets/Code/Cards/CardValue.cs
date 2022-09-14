@@ -1,5 +1,8 @@
 ﻿namespace Code.Cards
 {
+	/// <summary>
+	/// Class that enumerate a list of Values.
+	/// </summary>
 	public enum CardValue
 	{
 		Ace = 1,

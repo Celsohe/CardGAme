@@ -1390,7 +1390,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c6ebbf9627649f4479df90a6940b99aa, type: 2}
+  - {fileID: -1864428716252536088, guid: cf725d1e386d97647bfb59d9d3216619, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2411,6 +2411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _content: {fileID: 782686667}
+  _textFormat: Jogador {0}
   _textField: {fileID: 426463388}
 --- !u!1001 &1468313512
 PrefabInstance:
@@ -2640,10 +2641,58 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8407480129863026696, guid: cf725d1e386d97647bfb59d9d3216619, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6ebbf9627649f4479df90a6940b99aa, type: 2}
+    - target: {fileID: -8316198574425222147, guid: cf725d1e386d97647bfb59d9d3216619, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6ebbf9627649f4479df90a6940b99aa, type: 2}
+    - target: {fileID: -6356590558279481108, guid: cf725d1e386d97647bfb59d9d3216619, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6ebbf9627649f4479df90a6940b99aa, type: 2}
+    - target: {fileID: -5194853605800549033, guid: cf725d1e386d97647bfb59d9d3216619, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6ebbf9627649f4479df90a6940b99aa, type: 2}
+    - target: {fileID: -2571314496179358076, guid: cf725d1e386d97647bfb59d9d3216619, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6ebbf9627649f4479df90a6940b99aa, type: 2}
+    - target: {fileID: -1765840716823577968, guid: cf725d1e386d97647bfb59d9d3216619, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6ebbf9627649f4479df90a6940b99aa, type: 2}
     - target: {fileID: 919132149155446097, guid: cf725d1e386d97647bfb59d9d3216619, type: 3}
       propertyPath: m_Name
       value: Wooden Table FBX
       objectReference: {fileID: 0}
+    - target: {fileID: 1002392146689143675, guid: cf725d1e386d97647bfb59d9d3216619, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6ebbf9627649f4479df90a6940b99aa, type: 2}
+    - target: {fileID: 2672587507131843190, guid: cf725d1e386d97647bfb59d9d3216619, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6ebbf9627649f4479df90a6940b99aa, type: 2}
+    - target: {fileID: 4432496820391702818, guid: cf725d1e386d97647bfb59d9d3216619, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6ebbf9627649f4479df90a6940b99aa, type: 2}
+    - target: {fileID: 4994633374071640523, guid: cf725d1e386d97647bfb59d9d3216619, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6ebbf9627649f4479df90a6940b99aa, type: 2}
+    - target: {fileID: 5762654449450026756, guid: cf725d1e386d97647bfb59d9d3216619, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6ebbf9627649f4479df90a6940b99aa, type: 2}
+    - target: {fileID: 7531524864367755850, guid: cf725d1e386d97647bfb59d9d3216619, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6ebbf9627649f4479df90a6940b99aa, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf725d1e386d97647bfb59d9d3216619, type: 3}
 --- !u!4 &1528317566 stripped

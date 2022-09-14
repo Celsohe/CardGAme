@@ -4,10 +4,19 @@ using UnityEngine;
 
 namespace Code.Cards
 {
+	/// <summary>
+	/// Class Carpile that contain methods for a pile of cards. It contains properties like number of cards,
+	/// values, and types of cards it contains. ~Sealed~ prevent other classes to inherit its
+	/// properties.
+	/// </summary>
 	public sealed class CardPile
-	{
+	{ /// <summary>
+	 ///Creates a list of cards called _card. 
+	 /// </summary>
 		private List<Card> _cards = new List<Card>();
-
+/// <summary>
+/// Return a number of cards. 
+/// </summary>
 		public int Count
 		{
 			get
@@ -15,7 +24,9 @@ namespace Code.Cards
 				return _cards.Count;
 			}
 		}
-		
+		/// <summary>
+		/// Return value of sum of value of the cards.
+		/// </summary>
 		public int Value
 		{
 			get
@@ -28,7 +39,9 @@ namespace Code.Cards
 				return value;
 			}
 		}
-		
+		/// <summary>
+		/// Return if the Card mount have queens in your deck.
+		/// </summary>
 		public bool HasQueen
 		{
 			get
@@ -43,7 +56,9 @@ namespace Code.Cards
 				return false;
 			}
 		}
-		
+		/// <summary>
+		/// Return if the Card mount have kings in your deck.
+		/// </summary>
 		public bool HasKing
 		{
 			get
@@ -58,7 +73,9 @@ namespace Code.Cards
 				return false;
 			}
 		}
-		
+		/// <summary>
+		/// Return if the Card mount have Jacks in your deck.
+		/// </summary>
 		public bool HasJack
 		{
 			get
@@ -73,13 +90,18 @@ namespace Code.Cards
 				return false;
 			}
 		}
-
+/// <summary>
+/// Methods that creates a list of Cards.
+/// </summary>
 		public CardPile()
 		{
 			_cards = new List<Card>();
 			//Debug.Log("CardPile created");
 		}
-
+/// <summary>
+/// Duvida A1
+/// </summary>
+/// <param name="original"></param>
 		public CardPile(CardPile original)
 		{
 			_cards = new List<Card>(original._cards);

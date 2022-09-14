@@ -4,11 +4,16 @@ using UnityEngine;
 namespace Code.Cards
 {
 	[CreateAssetMenu(fileName = "NewCardVisualSet", menuName = "Cards/Visual Set")]
+
 	public sealed class CardVisualSet : ScriptableObject
 	{
 		[SerializeField]
 		private List<Sprite> _cardSprites = new List<Sprite>();
-
+/// <summary>
+/// Put the sprites in the cards. (really smart)
+/// </summary>
+/// <param name="card"></param>
+/// <returns></returns>
 		public Sprite GetCardSprite(Card card)
 		{
 			return GetByName($"{GetValueName(card.Value)}_{GetSuitName(card.Suit)}");
