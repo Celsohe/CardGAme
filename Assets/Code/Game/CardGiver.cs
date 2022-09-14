@@ -7,6 +7,9 @@ namespace Code.Game
 {
 	public sealed class CardGiver : MonoBehaviour
 	{
+		/// <summary>
+		/// Delegate 
+		/// </summary>
 		public delegate void FinshedGivingCards();
 		public static event FinshedGivingCards OnFinshedGivingCards;
 		[SerializeField] int numCard;

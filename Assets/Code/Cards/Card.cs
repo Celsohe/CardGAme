@@ -42,5 +42,5 @@ namespace Code.Cards
 			_suit = suit;
 			_value = value;
 		}
-	}
+	} 
 }
