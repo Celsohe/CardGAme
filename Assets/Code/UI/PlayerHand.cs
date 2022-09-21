@@ -21,9 +21,9 @@ namespace Code.UI
 		[SerializeField]
 		private Transform _cardsParent;
 		[SerializeField]
-		private float _cardRotation = 15;
+		private float _cardRotation = 5f;
 		[SerializeField]
-		private float _rotationPivotDistance = 10f;
+		private float _rotationPivotDistance = 5f;
 		[Header("Project References")]
 		[SerializeField]
 		private SelectableCard _selectableCardPrefab;
