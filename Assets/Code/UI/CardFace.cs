@@ -37,5 +37,10 @@ namespace Code.UI
 			_card = card;
 			_face.sprite = visualSet.GetCardSprite(card);
 		}
+
+		public void SetAsBack(CardVisualSet visualSet)
+		{
+			_face.sprite = visualSet.GetBackSprite();
+		}
 	}
 }

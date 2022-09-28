@@ -9827,6 +9827,7 @@ MonoBehaviour:
   _cardFacePrefab: {fileID: 6100239813874917343, guid: 57ed9968d977e0441acf15ce14776ca2, type: 3}
   _cardVisualSet: {fileID: 11400000, guid: 2de31c5add59366438faccdb965ed6a8, type: 2}
   _cardsParent: {fileID: 3386192546588182070}
+  _coverParent: {fileID: 2256303451837007757}
   _cover: {fileID: 8870044961132291087}
   _selectParticleSystem: {fileID: 7172319485252322470}
   _victoryParticleSystem: {fileID: 8219091219727526279}

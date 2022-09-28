@@ -8,263 +8,286 @@ using UnityEngine;
 
 namespace Code.UI
 {
-    public sealed class CardPileFace : MonoBehaviour, ISelectable, IInteractable
-    {
-        public enum State
-        {
-            Ready,
-            Winner,
-            Loser
-        }
-		
+	public sealed class CardPileFace : MonoBehaviour, ISelectable, IInteractable
+	{
+		public enum State
+		{
+			Ready,
+			Winner,
+			Loser
+		}
+
 		public delegate void CardPileCombat(Player.Index winner);
+
 		public static event CardPileCombat OnCardPileCombat;
 
-        /// <summary>
-        /// Lista com as propriedades de CardpileFace? (Lista com o mesmo nome da classe? )
-        /// </summary>
-        private static List<CardPileFace> _all = new List<CardPileFace>();
+		/// <summary>
+		/// Lista com as propriedades de CardpileFace? (Lista com o mesmo nome da classe? )
+		/// </summary>
+		private static List<CardPileFace> _all = new List<CardPileFace>();
 
-        [Header("Configuration")] [SerializeField]
-        private Player.Index _playerIndex;
+		[Header("Configuration")]
+		[SerializeField]
+		private Player.Index _playerIndex;
 
-        [SerializeField] private CardFace _cardFacePrefab;
-        [SerializeField] private CardVisualSet _cardVisualSet;
+		[SerializeField]
+		private CardFace _cardFacePrefab;
+		[SerializeField]
+		private CardVisualSet _cardVisualSet;
 
-        [Header("Components")] [SerializeField]
-        private Transform _cardsParent;
+		[Header("Components")]
+		[SerializeField]
+		private Transform _cardsParent;
+		[SerializeField]
+		private GameObject _cover;
+		[SerializeField]
+		private ParticleSystem _selectParticleSystem;
+		[SerializeField]
+		private ParticleSystem _victoryParticleSystem;
+		[SerializeField]
+		private ParticleSystem _defeatParticleSystem;
 
-        [SerializeField] private GameObject _cover;
-        [SerializeField] private ParticleSystem _selectParticleSystem;
-        [SerializeField] private ParticleSystem _victoryParticleSystem;
-        [SerializeField] private ParticleSystem _defeatParticleSystem;
+		[Header("Presentation")]
+		[SerializeField]
+		private float _cardDistance = .2f;
 
-        [Header("Presentation")] [SerializeField]
-        private float _cardDistance = .2f;
+		private CardPile _cardPile = new CardPile();
+		private List<CardFace> _cardFaces = new List<CardFace>();
+		private List<CardFace> _cardCovers = new List<CardFace>();
+		private State _state = State.Ready;
 
-        private CardPile _cardPile = new CardPile();
-        private List<CardFace> _cardFaces = new List<CardFace>();
-        private State _state = State.Ready;
+		public bool IsSelectable
+		{
+			get
+			{
+				switch (GameController.Instance.Stage)
+				{
+					case GameController.GameStage.DistributeCards:
+						return false;
+					case GameController.GameStage.PlayersCreatePiles:
+						return false;
+					case GameController.GameStage.CombatRounds:
+						if (_state == State.Ready)
+						{
+							return true;
+						}
 
-        public bool IsSelectable
-        {
-            get
-            {
-                switch (GameController.Instance.Stage)
-                {
-                    case GameController.GameStage.DistributeCards:
-                        return false;
-                    case GameController.GameStage.PlayersCreatePiles:
-                        return false;
-                    case GameController.GameStage.CombatRounds:
-                        if (_state == State.Ready)
-                        {
-                            return true;
-                        }
+						return false;
+					case GameController.GameStage.GameOver:
+						return false;
+					default:
+						return false;
+				}
+			}
+		}
 
-                        return false;
-                    case GameController.GameStage.GameOver:
-                        return false;
-                    default:
-                        return false;
-                }
-            }
-        }
+		public State PileState
+		{
+			get { return _state; }
+		}
 
-        public State PileState
-        {
-            get { return _state; }
-        }
+		public static List<CardPileFace> GetCardPilesFromPlayer(Player.Index playerIndex)
+		{
+			List<CardPileFace> playerCardPiles = new List<CardPileFace>();
+			for (int i = 0; i < _all.Count; i++)
+			{
+				if (_all[i]._playerIndex == playerIndex)
+				{
+					playerCardPiles.Add(_all[i]);
+				}
+			}
 
-        public static List<CardPileFace> GetCardPilesFromPlayer(Player.Index playerIndex)
-        {
-            List<CardPileFace> playerCardPiles = new List<CardPileFace>();
-            for (int i = 0; i < _all.Count; i++)
-            {
-                if (_all[i]._playerIndex == playerIndex)
-                {
-                    playerCardPiles.Add(_all[i]);
-                }
-            }
+			return playerCardPiles;
+		}
 
-            return playerCardPiles;
-        }
+		public int Count
+		{
+			get { return _cardPile.Count; }
+		}
 
-        public int Count
-        {
-            get { return _cardPile.Count; }
-        }
+		private void OnEnable()
+		{
+			TableTurner.OnTableTurned += OnTableTurned;
+			_all.Add(this);
+		}
 
-        private void OnEnable()
-        {
-            TableTurner.OnTableTurned += OnTableTurned;
-            _all.Add(this);
-        }
-
-        private void Start()
-        {
+		private void Start()
+		{
 			OnTableTurned();
-        }
+		}
 
-        private void OnDisable()
-        {
+		private void OnDisable()
+		{
 			TableTurner.OnTableTurned -= OnTableTurned;
-            _all.Remove(this);
-        }
+			_all.Remove(this);
+		}
 
-        public void Select()
-        {
-            _selectParticleSystem.Play(true);
-        }
+		public void Select()
+		{
+			_selectParticleSystem.Play(true);
+		}
 
-        public void Unselect()
-        {
-            _selectParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-        }
+		public void Unselect()
+		{
+			_selectParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+		}
 
-        public bool Interact(ISelectable selectedObject)
-        {
-            switch (GameController.Instance.Stage)
-            {
-                case GameController.GameStage.PlayersCreatePiles:
-                    if (TurnController.Instance.CurrentPlayerIndex != _playerIndex)
-                    {
-                        return false;
-                    }
+		public bool Interact(ISelectable selectedObject)
+		{
+			switch (GameController.Instance.Stage)
+			{
+				case GameController.GameStage.PlayersCreatePiles:
+					if (TurnController.Instance.CurrentPlayerIndex != _playerIndex)
+					{
+						return false;
+					}
 
-                    if (selectedObject == null)
-                    {
-                        Card topCard = RemoveCardFromPile();
-                        if (topCard != null)
-                        {
-                            PlayerHand playerHand = PlayerHand.GetPlayerHand(_playerIndex);
-                            if (playerHand != null)
-                            {
-                                playerHand.AddCard(topCard);
-                                return true;
-                            }
-                        }
-                    }
-                    else if (selectedObject is SelectableCard)
-                    {
-                        SelectableCard selectedCard = (SelectableCard) selectedObject;
-                        AddCardToPile(selectedCard.GetComponent<CardFace>().Card);
-                        selectedCard.RemoveSelfFromHand();
-                        return true;
-                    }
+					if (selectedObject == null)
+					{
+						Card topCard = RemoveCardFromPile();
+						if (topCard != null)
+						{
+							PlayerHand playerHand = PlayerHand.GetPlayerHand(_playerIndex);
+							if (playerHand != null)
+							{
+								playerHand.AddCard(topCard);
+								return true;
+							}
+						}
+					}
+					else if (selectedObject is SelectableCard)
+					{
+						SelectableCard selectedCard = (SelectableCard)selectedObject;
+						AddCardToPile(selectedCard.GetComponent<CardFace>().Card);
+						selectedCard.RemoveSelfFromHand();
+						return true;
+					}
 
-                    break;
-                case GameController.GameStage.CombatRounds:
-                    if (_state != State.Ready)
-                    {
-                        break;
-                    }
+					break;
+				case GameController.GameStage.CombatRounds:
+					if (_state != State.Ready)
+					{
+						break;
+					}
 
-                    if (selectedObject == null)
-                    {
-                        break;
-                    }
+					if (selectedObject == null)
+					{
+						break;
+					}
 
-                    if (selectedObject is CardPileFace)
-                    {
-                        CardPileFace otherPile = (CardPileFace) selectedObject;
-                        if (_playerIndex != otherPile._playerIndex)
-                        {
-                            CardPile winnerPile = Combat.Fight(_cardPile, otherPile._cardPile);
+					if (selectedObject is CardPileFace)
+					{
+						CardPileFace otherPile = (CardPileFace)selectedObject;
+						if (_playerIndex != otherPile._playerIndex)
+						{
+							CardPile winnerPile = Combat.Fight(_cardPile, otherPile._cardPile);
 							Player.Index winnerPlayer;
-                            if (winnerPile == _cardPile)
-                            {
-                                SetState(State.Winner);
+							if (winnerPile == _cardPile)
+							{
+								SetState(State.Winner);
 								winnerPlayer = _playerIndex;
-                                otherPile.SetState(State.Loser);
-                            }
-                            else
-                            {
-                                SetState(State.Loser);
+								otherPile.SetState(State.Loser);
+							}
+							else
+							{
+								SetState(State.Loser);
 								winnerPlayer = otherPile._playerIndex;
-                                otherPile.SetState(State.Winner);
-                            }
+								otherPile.SetState(State.Winner);
+							}
 
-                            Selector.Instance.UnselectAny();
-                            //TurnController.Instance.ChangeTurn();
+							Selector.Instance.UnselectAny();
+
+							//TurnController.Instance.ChangeTurn();
 							if (OnCardPileCombat != null)
 							{
 								OnCardPileCombat(winnerPlayer);
 							}
-                        }
-                    }
+						}
+					}
 
-                    break;
-            }
+					break;
+			}
 
-            return false;
-        }
+			return false;
+		}
 
-        public void AddCardToPile(Card card)
-        {
-            _cardPile.Add(card);
+		public void AddCardToPile(Card card)
+		{
+			_cardPile.Add(card);
 
-            CardFace cardFace = Instantiate(_cardFacePrefab, _cardsParent);
-            cardFace.SetFace(card, _cardVisualSet);
-            cardFace.OrderInLayer = _cardFaces.Count;
-            _cardFaces.Add(cardFace);
+			CardFace cardFace = Instantiate(_cardFacePrefab, _cardsParent);
+			cardFace.SetFace(card, _cardVisualSet);
+			cardFace.OrderInLayer = _cardFaces.Count;
+			_cardFaces.Add(cardFace);
 
-            Refresh();
-        }
+			Refresh(_cardFaces);
 
-        public Card RemoveCardFromPile()
-        {
-            Card topCard = _cardPile.RemoveTopCard();
-            if (topCard != null)
-            {
-                CardFace cardFace = _cardFaces[_cardFaces.Count - 1];
-                _cardFaces.RemoveAt(_cardFaces.Count - 1);
-                Destroy(cardFace.gameObject);
-                Refresh();
-            }
+			cardFace = Instantiate(_cardFacePrefab, _cover.transform);
+			cardFace.SetAsBack(_cardVisualSet);
+			cardFace.OrderInLayer = _cardCovers.Count;
+			_cardCovers.Add(cardFace);
+			
+			Refresh(_cardCovers);
+		}
 
-            return topCard;
-        }
+		public Card RemoveCardFromPile()
+		{
+			Card topCard = _cardPile.RemoveTopCard();
+			if (topCard != null)
+			{
+				CardFace cardFace = _cardFaces[_cardFaces.Count - 1];
+				_cardFaces.RemoveAt(_cardFaces.Count - 1);
+				Destroy(cardFace.gameObject);
+				Refresh(_cardFaces);
+				
+				cardFace = _cardCovers[_cardCovers.Count - 1];
+				_cardCovers.RemoveAt(_cardCovers.Count - 1);
+				Destroy(cardFace.gameObject);
+				Refresh(_cardCovers);
+			}
 
-        private void Refresh()
-        {
-            for (int i = 0; i < _cardFaces.Count; i++)
-            {
-                Vector3 cardPosition = _cardFaces[i].transform.localPosition;
-                cardPosition.y = -_cardDistance * i;
-                _cardFaces[i].transform.localPosition = cardPosition;
-                _cardFaces[i].OrderInLayer = i;
-            }
-        }
+			return topCard;
+		}
 
-        private void OnTableTurned()
-        {
-            if (TurnController.Instance.CurrentPlayerIndex == _playerIndex)
-            {
-                _cardsParent.gameObject.SetActive(true);
-                _cover.SetActive(false);
-            }
-            else
-            {
-                _cardsParent.gameObject.SetActive(false);
-                _cover.SetActive(true);
-            }
-        }
+		private void Refresh(List<CardFace> cards)
+		{
+			for (int i = 0; i < cards.Count; i++)
+			{
+				Vector3 cardPosition = cards[i].transform.localPosition;
+				cardPosition.y = -_cardDistance * i;
+				cards[i].transform.localPosition = cardPosition;
+				cards[i].OrderInLayer = i;
+			}
+		}
 
-        private void SetState(State state)
-        {
-            _state = state;
-            switch (state)
-            {
-                case State.Ready:
-                    break;
-                case State.Winner:
-                    _victoryParticleSystem.Play();
-                    break;
-                case State.Loser:
-                    _defeatParticleSystem.Play();
-                    break;
-            }
-        }
-    }
+		private void OnTableTurned()
+		{
+			if (TurnController.Instance.CurrentPlayerIndex == _playerIndex)
+			{
+				_cardsParent.gameObject.SetActive(true);
+				_cover.SetActive(false);
+			}
+			else
+			{
+				_cardsParent.gameObject.SetActive(false);
+				_cover.SetActive(true);
+			}
+		}
+
+		private void SetState(State state)
+		{
+			_state = state;
+			switch (state)
+			{
+				case State.Ready:
+					break;
+				case State.Winner:
+					_victoryParticleSystem.Play();
+					break;
+				case State.Loser:
+					_defeatParticleSystem.Play();
+					break;
+			}
+		}
+	}
 }
