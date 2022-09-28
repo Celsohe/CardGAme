@@ -16,6 +16,9 @@ namespace Code.UI
             Winner,
             Loser
         }
+		
+		public delegate void CardPileCombat(Player.Index winner);
+		public static event CardPileCombat OnCardPileCombat;
 
         /// <summary>
         /// Lista com as propriedades de CardpileFace? (Lista com o mesmo nome da classe? )
@@ -168,19 +171,26 @@ namespace Code.UI
                         if (_playerIndex != otherPile._playerIndex)
                         {
                             CardPile winnerPile = Combat.Fight(_cardPile, otherPile._cardPile);
+							Player.Index winnerPlayer;
                             if (winnerPile == _cardPile)
                             {
                                 SetState(State.Winner);
+								winnerPlayer = _playerIndex;
                                 otherPile.SetState(State.Loser);
                             }
                             else
                             {
                                 SetState(State.Loser);
+								winnerPlayer = otherPile._playerIndex;
                                 otherPile.SetState(State.Winner);
                             }
 
                             Selector.Instance.UnselectAny();
-                            TurnController.Instance.ChangeTurn();
+                            //TurnController.Instance.ChangeTurn();
+							if (OnCardPileCombat != null)
+							{
+								OnCardPileCombat(winnerPlayer);
+							}
                         }
                     }
 
