@@ -94,18 +94,18 @@ namespace Code.UI
 
         private void OnEnable()
         {
-            TurnController.OnTurnChanged += OnTurnChanged;
+            TableTurner.OnTableTurned += OnTableTurned;
             _all.Add(this);
         }
 
         private void Start()
         {
-            OnTurnChanged(TurnController.Instance.CurrentPlayerIndex);
+			OnTableTurned();
         }
 
         private void OnDisable()
         {
-            TurnController.OnTurnChanged -= OnTurnChanged;
+			TableTurner.OnTableTurned -= OnTableTurned;
             _all.Remove(this);
         }
 
@@ -227,9 +227,9 @@ namespace Code.UI
             }
         }
 
-        private void OnTurnChanged(Player.Index turn)
+        private void OnTableTurned()
         {
-            if (turn == _playerIndex)
+            if (TurnController.Instance.CurrentPlayerIndex == _playerIndex)
             {
                 _cardsParent.gameObject.SetActive(true);
                 _cover.SetActive(false);
