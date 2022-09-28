@@ -5258,8 +5258,8 @@ RectTransform:
   - {fileID: 827286273}
   - {fileID: 142578486}
   - {fileID: 1059512824}
-  m_Father: {fileID: 266547148}
-  m_RootOrder: 0
+  m_Father: {fileID: 2079449914}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5451,7 +5451,7 @@ GameObject:
   - component: {fileID: 266547150}
   - component: {fileID: 266547149}
   m_Layer: 5
-  m_Name: Content
+  m_Name: InputBlocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5468,8 +5468,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 121790350}
+  m_Children: []
   m_Father: {fileID: 2079449914}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9074,6 +9073,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 266547148}
+  - {fileID: 121790350}
   m_Father: {fileID: 1031313316}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9094,7 +9094,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce60d5db6e564324a13aed62ec2297eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _content: {fileID: 266547147}
+  _content: {fileID: 121790349}
+  _inputBlocker: {fileID: 266547147}
   _textFormat: Jogador {0} venceu esse combate
   _textField: {fileID: 142578487}
 --- !u!1 &24256692748749299
