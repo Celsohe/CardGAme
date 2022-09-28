@@ -65,18 +65,18 @@ namespace Code.UI
 		private void OnEnable()
 		{
 			_playerHands.Add(this);
-			TurnController.OnTurnChanged += OnTurnChanged;
+			TableTurner.OnTableTurned += OnTableTurned;
 		}
 
 		private void Start()
 		{
-			OnTurnChanged(TurnController.Instance.CurrentPlayerIndex);
+			OnTableTurned();
 		}
 
 		private void OnDisable()
 		{
 			_playerHands.Remove(this);
-			TurnController.OnTurnChanged -= OnTurnChanged;
+			TableTurner.OnTableTurned -= OnTableTurned;
 		}
 		
 		public void AddCard(Card card)
@@ -137,9 +137,9 @@ namespace Code.UI
 			}
 		}
 
-		private void OnTurnChanged(Player.Index turn)
+		private void OnTableTurned()
 		{
-			_cardsParent.gameObject.SetActive(turn == _playerIndex);
+			_cardsParent.gameObject.SetActive(TurnController.Instance.CurrentPlayerIndex == _playerIndex);
 		}
 	}
 }
