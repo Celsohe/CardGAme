@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Code.UI.Selection
 {
@@ -54,6 +56,11 @@ namespace Code.UI.Selection
 		{
 			if(Input.GetMouseButtonDown(0))
 			{
+				if (IsOverCanvasElement(Input.mousePosition))
+				{
+					return;
+				}
+				
 				GameObject hitObjectOnTop = GetHitObjectOnTop();
 
 				if (hitObjectOnTop != null)
@@ -144,6 +151,30 @@ namespace Code.UI.Selection
 				return hits[selectIndex].transform.gameObject;
 			}
 			return null;
+		}
+		
+		private bool IsOverCanvasElement(Vector2 position)
+		{
+			GraphicRaycaster[] raycasters = FindObjectsOfType<GraphicRaycaster>();
+			PointerEventData pointerData = new PointerEventData(FindObjectOfType<EventSystem>());
+
+			pointerData.position = position;
+			List<RaycastResult> hudObjects = new List<RaycastResult>();
+
+			for (int i = 0, j = raycasters.Length; i < j; i++)
+			{
+				if (raycasters[i].enabled)
+				{
+					raycasters[i].Raycast(pointerData, hudObjects);
+					if (hudObjects.Count > 0)
+					{
+						Debug.Log("Ignoring touch because it started over a canvas element " +
+								hudObjects[0].gameObject.name, hudObjects[0].gameObject);
+						return true;
+					}
+				}
+			}
+			return false;
 		}
 	}
 }
